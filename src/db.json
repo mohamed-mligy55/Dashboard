@@ -1,0 +1,100 @@
+{
+  "users": [
+    {
+      "address": {
+        "geolocation": {
+          "lat": "10.3456",
+          "long": "20.6419"
+        },
+        "city": "fresno",
+        "street": "saddle st",
+        "number": 1342,
+        "zipcode": "96378-0245"
+      },
+      "id": "7",
+      "email": "miriam@gmail.com",
+      "username": "snyder",
+      "password": "f238&@*$",
+      "name": {
+        "firstname": "miriam",
+        "lastname": "snyder"
+      },
+      "phone": "1-123-943-0563",
+      "__v": 0
+    },
+    {
+      "address": {
+        "geolocation": {
+          "lat": "50.3456",
+          "long": "10.6419"
+        },
+        "city": "mesa",
+        "street": "vally view ln",
+        "number": 1342,
+        "zipcode": "96378-0245"
+      },
+      "id": "8",
+      "email": "william@gmail.com",
+      "username": "hopkins",
+      "password": "William56$hj",
+      "name": {
+        "firstname": "william",
+        "lastname": "hopkins"
+      },
+      "phone": "1-478-001-0890",
+      "__v": 0
+    },
+    {
+      "address": {
+        "geolocation": {
+          "lat": "40.12456",
+          "long": "20.5419"
+        },
+        "city": "miami",
+        "street": "avondale ave",
+        "number": 345,
+        "zipcode": "96378-0245"
+      },
+      "id": "9",
+      "email": "kate@gmail.com",
+      "username": "kate_h",
+      "password": "kfejk@*_",
+      "name": {
+        "firstname": "kate",
+        "lastname": "hale"
+      },
+      "phone": "1-678-456-1934",
+      "__v": 0
+    },
+    {
+      "address": {
+        "geolocation": {
+          "lat": "30.24788",
+          "long": "-20.545419"
+        },
+        "city": "fort wayne",
+        "street": "oak lawn ave",
+        "number": 526,
+        "zipcode": "10256-4532"
+      },
+      "id": "10",
+      "email": "jimmie@gmail.com",
+      "username": "jimmie_k",
+      "password": "klein*#%*",
+      "name": {
+        "firstname": "jimmie",
+        "lastname": "klein"
+      },
+      "phone": "1-104-001-4567",
+      "__v": 0
+    },
+    {
+      "username": "mligy",
+      "phone": "125959768",
+      "email": "mohammedmligy79@gmail.com",
+      "city": "fffff",
+      "id": "2hGFnuj8tjc"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
