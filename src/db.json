@@ -1,99 +1,75 @@
 {
   "users": [
     {
-      "address": {
-        "geolocation": {
-          "lat": "10.3456",
-          "long": "20.6419"
-        },
-        "city": "fresno",
-        "street": "saddle st",
-        "number": 1342,
-        "zipcode": "96378-0245"
-      },
-      "id": "7",
-      "email": "miriam@gmail.com",
-      "username": "snyder",
-      "password": "f238&@*$",
+      "email": "mohammedmligy55@gmail.com",
+      "username": "ahmed-a",
+      "phone": "4435644531445",
       "name": {
-        "firstname": "miriam",
-        "lastname": "snyder"
+        "firstname": "ahmed",
+        "lastname": "atef"
       },
-      "phone": "1-123-943-0563",
-      "__v": 0
+      "address": {
+        "city": "cairo",
+        "street": "elslam"
+      },
+      "id": "y69daA77sU8"
     },
     {
-      "address": {
-        "geolocation": {
-          "lat": "50.3456",
-          "long": "10.6419"
-        },
-        "city": "mesa",
-        "street": "vally view ln",
-        "number": 1342,
-        "zipcode": "96378-0245"
-      },
-      "id": "8",
-      "email": "william@gmail.com",
-      "username": "hopkins",
-      "password": "William56$hj",
+      "email": "ahmedmohamed55@gmail.com",
+      "username": "mohamed",
+      "password": "ةخاشةثي1",
+      "phone": "14545656479",
       "name": {
-        "firstname": "william",
-        "lastname": "hopkins"
+        "firstname": "mohamed",
+        "lastname": "karim"
       },
-      "phone": "1-478-001-0890",
-      "__v": 0
+      "address": {
+        "city": "cairo",
+        "street": "elslam",
+        "number": 1,
+        "zipcode": "00000",
+        "geolocation": {
+          "lat": "0",
+          "long": "0"
+        }
+      },
+      "id": "apB0kHCRW9c"
     },
     {
-      "address": {
-        "geolocation": {
-          "lat": "40.12456",
-          "long": "20.5419"
-        },
-        "city": "miami",
-        "street": "avondale ave",
-        "number": 345,
-        "zipcode": "96378-0245"
-      },
-      "id": "9",
-      "email": "kate@gmail.com",
-      "username": "kate_h",
-      "password": "kfejk@*_",
+      "id": "2tyzDyFHQ9c",
+      "email": "mohammedmligy55@gmail.com",
+      "username": "moastafa",
+      "password": "ةخاشةثي1",
+      "phone": "+14466565",
       "name": {
-        "firstname": "kate",
-        "lastname": "hale"
+        "firstname": "mostafa",
+        "lastname": "mohamed"
       },
-      "phone": "1-678-456-1934",
-      "__v": 0
+      "address": {
+        "city": "cairo",
+        "street": "giza",
+        "number": 1,
+        "zipcode": "00000",
+        "geolocation": {
+          "lat": "0",
+          "long": "0"
+        }
+      }
     },
     {
-      "address": {
-        "geolocation": {
-          "lat": "30.24788",
-          "long": "-20.545419"
-        },
-        "city": "fort wayne",
-        "street": "oak lawn ave",
-        "number": 526,
-        "zipcode": "10256-4532"
-      },
-      "id": "10",
-      "email": "jimmie@gmail.com",
-      "username": "jimmie_k",
-      "password": "klein*#%*",
+      "email": "mohammedmligy55@gmail.com",
+      "username": "mohamed",
+      "phone": "+201228594650",
       "name": {
-        "firstname": "jimmie",
-        "lastname": "klein"
+        "firstname": "mohamed",
+        "lastname": "mligy"
       },
-      "phone": "1-104-001-4567",
-      "__v": 0
-    },
-    {
-      "username": "mligy",
-      "phone": "125959768",
-      "email": "mohammedmligy79@gmail.com",
-      "city": "fffff",
-      "id": "2hGFnuj8tjc"
+      "address": {
+        "city": "Giza",
+        "street": "منوف"
+      },
+      "password": "ةخاشةثي1",
+      "id": "udKnsjXSo80"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

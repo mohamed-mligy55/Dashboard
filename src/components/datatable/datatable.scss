@@ -1,6 +1,26 @@
 .table-wrapper {
   padding: 0 30px;
-  background-color: #fff;
+
+  &.light {
+    background-color: #fff;
+    color: #000;
+
+    .action-buttons button {
+      background: white;
+      border: 1px solid #e0e0e0;
+    }
+  }
+
+  &.dark {
+    background-color: #111;
+    color: #fff;
+
+    .action-buttons button {
+      background: transparent;
+      border: 1px solid #555;
+      color: #fff;
+    }
+  }
 
   .user-cell {
     display: flex;
@@ -34,17 +54,25 @@
 
     button {
       padding: 4px 10px;
-      border: 1px solid #e0e0e0;
-      background: white;
       border-radius: 4px;
       cursor: pointer;
       font-size: 1rem;
       transition: 0.2s;
+    }
 
+    .btn-delete {
+      color: #d32f2f;
+       
+    }
+
+    .btn-edit {
+      color: #1976d2;
     
-      &.btn-delete {
-        color: #d32f2f;
-      }
+    }
+
+    .btn-view {
+      color: #388e3c;
+       
     }
   }
 }

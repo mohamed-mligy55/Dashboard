@@ -1,0 +1,51 @@
+.table-wrapper {
+  padding: 0 30px;
+  background-color: #fff;
+}
+.table-wrapper .user-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+}
+.table-wrapper .user-cell img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+.table-wrapper .status-pill {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.table-wrapper .status-pill.active {
+  background: #e6f7ee;
+  color: #28a745;
+}
+.table-wrapper .status-pill.passive {
+  background: #fff0f0;
+  color: #dc3545;
+}
+.table-wrapper .status-pill.pending {
+  background: #fff9e6;
+  color: #ffc107;
+}
+.table-wrapper .action-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  height: 100%;
+}
+.table-wrapper .action-buttons button {
+  padding: 4px 10px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.2s;
+}
+.table-wrapper .action-buttons button.btn-delete {
+  color: #d32f2f;
+}/*# sourceMappingURL=datatable.css.map */

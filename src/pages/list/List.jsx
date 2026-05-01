@@ -11,7 +11,7 @@ const Lists = () => {
       <Sidebar/>
       <div className="listContainer">
         <Navbar/>
-        <div classname="customer">
+        <div className="top">
           <h3>customer</h3>
           <Link to="/new">Add New</Link>
         </div>

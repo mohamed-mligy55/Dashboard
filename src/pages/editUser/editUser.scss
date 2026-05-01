@@ -7,17 +7,18 @@ $border-color: #ccc;
 .new {
   width: 100%;
   display: flex;
-    &.light {
+  &.light {
     .form-card {
       background-color: #fff;
       color: #000;
     }
-      input {
+
+    input {
       color: #000;
       border-bottom: 1px solid #ccc;
     }
   }
-   &.dark {
+    &.dark {
     .form-card {
       background-color: #111;
       color: #fff;
@@ -33,8 +34,6 @@ $border-color: #ccc;
       color: #ccc;
     }
   }
-
-
   .newContainer {
     flex: 6;
 

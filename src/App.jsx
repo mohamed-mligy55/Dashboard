@@ -2,8 +2,11 @@ import  Home  from "./pages/home/Home"
 import {BrowserRouter,  Routes, Route } from "react-router-dom";
 import Lists from "./pages/list/List"
 import New from "./pages/new/New";
+import EditUser from "./pages/editUser/EditUser";
+
+
 // في أعلى ملف App.jsx
-import { DarkModeContextProvider } from "./components/context/darkModeContext";
+
 import Productdetails from "./pages/productdetails/productdetails"
 function App() {
  const userInputs = [
@@ -19,19 +22,20 @@ function App() {
   return (
 
 
-    <DarkModeContextProvider>
+ 
     
         <Routes>
      
           <Route path="/" element={<Home />} />
-          <Route path="/list" element={<Lists />} />
+          <Route path="/lists" element={<Lists />} />
           <Route path="/product/:id" element={<Productdetails/>} />
-            <Route  path="new" element={<New  title="Add New Product" inputs={userInputs} />}/>
+          <Route path="/users/:id" element={<EditUser />} />
+            <Route  path="/new" element={<New  title="Add New Product" inputs={userInputs} />}/>
             
         </Routes>
        
      
-    </DarkModeContextProvider>
+
   
     
   

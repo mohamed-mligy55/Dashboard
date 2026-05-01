@@ -4,20 +4,30 @@
   .listContainer {
     flex: 6;
   
-  .customer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 30px ;
-    h3 {
-          font-size: 30px;
-    color: gray
-    }
-    a {
-         color: green;
-    border: 1px solid;
-    padding: 4px 5px;
+   .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px;
+h3{
+  font-size: 2rem;
+  color: gray;
+}
+  a{
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
     }
   }
+ 
 }
+  }
+
 }

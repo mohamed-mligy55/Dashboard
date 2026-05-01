@@ -4,6 +4,15 @@
   min-height: 100vh;
   background-color: white;
 
+  @media (max-width: 768px) {
+   
+    display: none;
+   
+  }
+ &.dark {
+    background-color: #111;
+    color: white;
+  }
   .top {
     height: 50px;
     display: flex;

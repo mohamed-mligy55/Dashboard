@@ -2,6 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import './datatable.scss';
 import { Link } from 'react-router-dom';
+import { useTheme } from "@mui/material/styles";
 
 // 1. دالة جلب البيانات من السيرفر المحلي
 const fetchUsers = async () => {
@@ -31,24 +32,27 @@ const deleteUserApi = async (id) => {
   return id;
 };
 
-const UserTable = () => {
+const Datatable = () => {
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ['users'],
     queryFn: fetchUsers,
-    staleTime: Infinity,
+  
+  
   });
 
   const mutation = useMutation({
     mutationFn: deleteUserApi,
     onSuccess: (deletedId) => {
       // تحديث الكاش فوراً لحذف الصف من الجدول أمام المستخدم
-      queryClient.setQueryData(['users'], (prev) => 
-        prev?.filter(user => user.id !== deletedId)
-      );
-    },
+      queryClient.invalidateQueries({
+        queryKey: ["users"]
+      });
+    }
   });
+    
+
 
   const columns = [
     { field: 'orderId', headerName: 'ID', width: 70 },
@@ -87,7 +91,12 @@ const UserTable = () => {
       sortable: false,
       renderCell: (params) => (
         <div className="action-buttons">
-          <Link to={`/product/${params.row.id}`} className="btn-view">View</Link>
+          <Link to={`/user/${params.row.id}`} className='btn-view'>
+         View
+          </Link>
+          <Link to={`/users/${params.row.id}` } className='btn-edit'>
+         Edit
+          </Link>
           <button 
             onClick={() => {
             
@@ -103,26 +112,39 @@ const UserTable = () => {
       )
     }
   ];
+    const theme = useTheme();
 
   return (
-    <div className="table-wrapper">
-      <DataGrid
-        rows={data || []}
-        columns={columns}
-        loading={isLoading}
-        checkboxSelection
-        disableSelectionOnClick
-        autoHeight
-        sx={{
-          border: 'none',
-          '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: '#f8f9fa',
-            fontWeight: 'bold'
-          },
-        }}
-      />
+    <div className={`table-wrapper ${theme.palette.mode}`}>
+   <DataGrid
+  rows={data || []}
+  columns={columns}
+  loading={isLoading}
+  checkboxSelection
+  autoHeight
+  sx={{
+    border: 'none',
+
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary,
+
+    "& .MuiDataGrid-columnHeaders": {
+      backgroundColor: theme.palette.background.default,
+      color: theme.palette.text.primary,
+    },
+
+    "& .MuiDataGrid-row": {
+      backgroundColor: theme.palette.background.paper,
+    },
+
+    "& .MuiDataGrid-footerContainer": {
+      backgroundColor: theme.palette.background.default,
+      color: theme.palette.text.primary,
+    }
+  }}
+/>
     </div>
   );
 };
 
-export default UserTable;
+export default Datatable;
