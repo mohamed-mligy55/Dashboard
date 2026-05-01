@@ -1,4 +1,4 @@
-import "./edituser.scss";
+import "./editUser.scss";
 import { useQuery } from "@tanstack/react-query";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
