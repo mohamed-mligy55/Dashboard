@@ -20,6 +20,7 @@ import { useTheme } from "@mui/material/styles";
 
 
 const Sidebar = () => {
+  console.log("SIDEBAR");
    const theme = useTheme();
  const { mode, toggleTheme } = useThemeContext();
 

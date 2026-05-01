@@ -11,16 +11,16 @@ const fetchUsers = async () => {
   const data = await res.json();
   
   // نستخدم map لتحويل شكل البيانات ليتناسب مع الـ DataGrid
-  return data.map((user, index) => ({
-    id: user.id, // json-server يستخدم id
-    orderId: index + 1,
-    name: `${user.name.firstname} ${user.name.lastname}`,
-    avatar: `https://ui-avatars.com/api/?name=${user.name.firstname}+${user.name.lastname}&background=random`, // صورة افتراضية تعتمد على الاسم
-    email: user.email,
-    city: user.address.city, // استخدام city من بياناتك
-    phone: user.phone,
-    status: ['active', 'passive', 'pending'][index % 3], // حالة افتراضية للتصميم
-  }));
+return data.map((user, index) => ({
+  id: user.id,
+  orderId: index + 1,
+  name: `${user?.name?.firstname ?? ""} ${user?.name?.lastname ?? ""}`.trim() || "Unknown",
+  avatar: `https://ui-avatars.com/api/?name=${user?.name?.firstname ?? ""}+${user?.name?.lastname ?? ""}`,
+  email: user.email || "N/A",
+  city: user?.address?.city || "N/A",
+  phone: user.phone || "N/A",
+  status: ['active', 'passive', 'pending'][index % 3],
+}));
 };
 
 // 2. دالة الحذف الحقيقي من السيرفر المحلي
@@ -67,7 +67,11 @@ const Datatable = () => {
             alt="" 
             style={{ width: '32px', height: '32px', borderRadius: '50%' }} 
           />
-          <span>{params.row.name}</span>
+        <span>
+  {typeof params.row.name === "object"
+    ? `${params.row.name.firstname} ${params.row.name.lastname}`
+    : params.row.name}
+</span>
         </div>
       )
     },
@@ -113,7 +117,7 @@ const Datatable = () => {
     }
   ];
     const theme = useTheme();
-
+  if (isLoading) return <div>Loading...</div>;
   return (
     <div className={`table-wrapper ${theme.palette.mode}`}>
    <DataGrid

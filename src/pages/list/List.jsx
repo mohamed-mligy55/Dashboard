@@ -5,6 +5,7 @@ import Datatable from "../../components/datatable/Datatable"
 import {Link} from "react-router-dom"
 
 const Lists = () => {
+  console.log("LISTS RENDER");
   return (
     <>
     <div className="list">

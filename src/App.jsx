@@ -18,7 +18,7 @@ function App() {
   { id: 6, label: "Address", type: "text", placeholder: "Elton St. 216 NewYork" },
   { id: 7, label: "Country", type: "text", placeholder: "USA" },
 ];
-
+console.log("APP RENDER");
   return (
 
 
