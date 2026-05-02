@@ -12,7 +12,7 @@ const Productdetails = () => {
 
   const fetchdetails = async () => {
     // تأكد من البورت (5000 كما عملنا سابقاً)
-    const res = await fetch(`http://localhost:4000/users/${id}`);
+    const res = await fetch(`http://localhost:5000/users/${id}`);
     if (!res.ok) throw new Error("User not found");
     const data = await res.json();
     return data;

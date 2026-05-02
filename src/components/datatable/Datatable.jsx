@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material/styles";
 
 // 1. دالة جلب البيانات من السيرفر المحلي
 const fetchUsers = async () => {
-  const res = await fetch('http://localhost:4000/users'); // البورت الجديد
+  const res = await fetch('http://localhost:5000/users'); // البورت الجديد
   if (!res.ok) throw new Error("Failed to fetch users");
   const data = await res.json();
   
@@ -25,7 +25,7 @@ return data.map((user, index) => ({
 
 // 2. دالة الحذف الحقيقي من السيرفر المحلي
 const deleteUserApi = async (id) => {
-  const response = await fetch(`http://localhost:4000/users/${id}`, {
+  const response = await fetch(`http://localhost:5000/users/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) throw new Error('Failed to delete');

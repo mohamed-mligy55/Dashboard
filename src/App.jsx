@@ -28,7 +28,7 @@ console.log("APP RENDER");
      
           <Route path="/" element={<Home />} />
           <Route path="/lists" element={<Lists />} />
-          <Route path="/product/:id" element={<Productdetails/>} />
+          <Route path="/user/:id" element={<Productdetails/>} />
           <Route path="/users/:id" element={<EditUser />} />
             <Route  path="/new" element={<New  title="Add New Product" inputs={userInputs} />}/>
             

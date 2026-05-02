@@ -27,7 +27,7 @@ const EditUser = ({ title }) => {
   const { data: user, isLoading } = useQuery({
     queryKey: ["user", id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:4000/users/${id}`);
+      const res = await fetch(`http://localhost:5000/users/${id}`);
       if (!res.ok) throw new Error("User not found");
       return res.json();
     },
@@ -46,7 +46,7 @@ const EditUser = ({ title }) => {
   }, [user]);
    
 const updateUser = async (updatedData) => {
-  const res = await fetch(`http://localhost:4000/users/${id}`, {
+  const res = await fetch(`http://localhost:5000/users/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

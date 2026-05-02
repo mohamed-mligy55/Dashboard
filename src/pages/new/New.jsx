@@ -24,7 +24,7 @@ const New = ({ inputs, title }) => {
 
   // 👉 API function
   const addUserApi = async (userData) => {
-    const res = await fetch("http://localhost:4000/users", {
+    const res = await fetch("http://localhost:5000/users", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {

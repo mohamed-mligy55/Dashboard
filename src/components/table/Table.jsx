@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const Tabledata = () => {
   const fetchData = async () => {
-    const res = await fetch("http://localhost:4000/users");
+    const res = await fetch("http://localhost:5000/users");
     if (!res.ok) throw new Error("error");
     return res.json();
   };
