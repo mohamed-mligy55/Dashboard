@@ -46,7 +46,7 @@ const EditUser = ({ title }) => {
   }, [user]);
    
 const updateUser = async (updatedData) => {
-  const res = await fetch(`http://localhost:5000/users/${id}`, {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
