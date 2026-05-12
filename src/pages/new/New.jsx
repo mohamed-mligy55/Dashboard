@@ -23,7 +23,6 @@ const New = ({ inputs, title }) => {
   const [password, setPassword] = useState("");
   const [city, setCity] = useState("");
 
-  // 👉 API function
   const addUserApi = async (userData) => {
     const res = await fetch(apiUrl("/users"), {
       method: "POST",
@@ -33,7 +32,16 @@ const New = ({ inputs, title }) => {
       },
     });
 
-    if (!res.ok) throw new Error("Failed to add user");
+    if (!res.ok) {
+      let detail = res.statusText;
+      try {
+        const errBody = await res.json();
+        if (errBody?.error) detail = errBody.error;
+      } catch {
+        /* ignore */
+      }
+      throw new Error(detail || `HTTP ${res.status}`);
+    }
 
     return res.json();
   };
@@ -56,10 +64,12 @@ const New = ({ inputs, title }) => {
   setCity("");
   setPassword("");
     },
-    onError: () => {
-  alert("Failed to add user");
-},
-
+    onError: (err) => {
+      const msg =
+        err?.message ||
+        "تعذّر الإضافة. شغّل الخادم: npm run server (منفذ 5000) مع npm run dev.";
+      alert(msg);
+    },
   });
 
   const handleSubmit = (e) => {
@@ -107,7 +117,11 @@ const New = ({ inputs, title }) => {
           </div>
 
           <div className="form-card">
-            <form className="user-form" onSubmit={handleSubmit}>
+            <form
+              className="user-form"
+              onSubmit={handleSubmit}
+              noValidate
+            >
               <div className="inputs-section">
 
                 <div className="form-group full-row">

@@ -80,7 +80,13 @@ app.post("/users", (req, res) => {
     __v: body.__v ?? 0,
   };
 
-  insertUser.run(id, JSON.stringify(user));
+  try {
+    insertUser.run(id, JSON.stringify(user));
+  } catch (e) {
+    console.error("POST /users insert failed:", e);
+    res.status(500).json({ error: e?.message || "Database insert failed" });
+    return;
+  }
   res.status(201).json(user);
 });
 
