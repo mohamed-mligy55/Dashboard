@@ -6,13 +6,14 @@ import Chart from "../../components/chart/Chart";
 import List from "../../components/table/Table";
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from "react-router-dom"; // تأكد من المسار الصحيح للـ router
+import { apiUrl } from "../../api";
 
 const Productdetails = () => {
   const { id } = useParams();
 
   const fetchdetails = async () => {
     // تأكد من البورت (5000 كما عملنا سابقاً)
-    const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+    const res = await fetch(apiUrl(`/users/${id}`));
     if (!res.ok) throw new Error("User not found");
     const data = await res.json();
     return data;
@@ -38,7 +39,9 @@ const Productdetails = () => {
             <div className="item">
               <img
                 // صورة افتراضية تعتمد على الاسم بما أن الـ API لا يحتوي على صور
-                src={`https://ui-avatars.com/api/?name=${data?.name.firstname}+${data?.name.lastname}&background=random&size=120`}
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                  `${data?.name?.firstname ?? ""} ${data?.name?.lastname ?? ""}`,
+                )}&background=random&size=120`}
                 alt=""
                 className="itemImg"
               />

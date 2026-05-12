@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { apiUrl } from "../../api";
 
 const New = ({ inputs, title }) => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const New = ({ inputs, title }) => {
 
   // 👉 API function
   const addUserApi = async (userData) => {
-    const res = await fetch('https://jsonplaceholder.typicode.com/users', {
+    const res = await fetch(apiUrl("/users"), {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {

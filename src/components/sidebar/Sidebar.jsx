@@ -1,4 +1,6 @@
 import "./sidebar.scss";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -13,19 +15,28 @@ import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
 import { useThemeContext } from "../../pages/context/ThemeContext";
-
-
-
-import { useTheme } from "@mui/material/styles";
-
+import { useSidebarDrawer } from "../../pages/context/SidebarDrawerContext";
 
 const Sidebar = () => {
-  console.log("SIDEBAR");
-   const theme = useTheme();
- const { mode, toggleTheme } = useThemeContext();
+  const { mode } = useThemeContext();
+  const location = useLocation();
+  const { mobileOpen, closeMobileSidebar } = useSidebarDrawer();
+
+  useEffect(() => {
+    closeMobileSidebar();
+  }, [location.pathname, closeMobileSidebar]);
 
   return (
-    <div className={`sidebar ${mode} `}>
+    <>
+      <button
+        type="button"
+        className={`sidebar-backdrop ${mobileOpen ? "sidebar-backdrop--visible" : ""}`}
+        aria-label="Close menu"
+        onClick={closeMobileSidebar}
+      />
+      <div
+        className={`sidebar ${mode} ${mobileOpen ? "sidebar--mobile-open" : ""}`}
+      >
       <div className="top">
         <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">lamadmin</span>
@@ -104,6 +115,7 @@ const Sidebar = () => {
         ></div>
       </div>
     </div>
+    </>
   );
 };
 

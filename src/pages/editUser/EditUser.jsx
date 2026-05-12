@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; 
 import { useTheme } from "@mui/material/styles";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiUrl } from "../../api";
+
 const EditUser = ({ title }) => {
      const theme = useTheme(); // 
   const { id } = useParams();
@@ -27,7 +29,7 @@ const EditUser = ({ title }) => {
   const { data: user, isLoading } = useQuery({
     queryKey: ["user", id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/users/${id}`);
+      const res = await fetch(apiUrl(`/users/${id}`));
       if (!res.ok) throw new Error("User not found");
       return res.json();
     },
@@ -46,7 +48,7 @@ const EditUser = ({ title }) => {
   }, [user]);
    
 const updateUser = async (updatedData) => {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+  const res = await fetch(apiUrl(`/users/${id}`), {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

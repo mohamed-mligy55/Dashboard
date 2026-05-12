@@ -1,3 +1,152 @@
+// ——— Desktop / tablet: horizontal scroll + stable column widths ———
+.table-responsive-shell {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+
+  // يمنع الجدول من “سحب” عرض الحاوية بدون تمرير واضح
+  .MuiTable-root.home-users-table {
+    min-width: 640px;
+    width: 100%;
+    table-layout: auto;
+  }
+}
+
+.home-users-table__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.home-users-table__avatar {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.home-users-table__name {
+  min-width: 0;
+  word-break: break-word;
+}
+
+// ——— Mobile / narrow: card list (بدل أعمدة مكسورة) ———
+.user-table-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-table-cards__item {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.user-table-cards--dark .user-table-cards__item {
+  background: #1e1e1e;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+
+.user-table-cards--dark .user-table-cards__row--header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.user-table-cards--dark .user-table-cards__avatar {
+  background-color: #333;
+  color: #eee;
+}
+
+.user-table-cards--dark .user-table-cards__details dt {
+  color: #aaa;
+}
+
+.user-table-cards--dark .user-table-cards__details dd {
+  color: #eee;
+}
+
+.user-table-cards__row--header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.user-table-cards__id {
+  font-size: 12px;
+  font-weight: 700;
+  color: #7451f8;
+  flex-shrink: 0;
+}
+
+.user-table-cards__avatar {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.user-table-cards__name {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.3;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.user-table-cards__details {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+
+  > div {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 8px;
+    align-items: start;
+    font-size: 13px;
+  }
+
+  dt {
+    margin: 0;
+    font-weight: 600;
+    color: #888;
+  }
+
+  dd {
+    margin: 0;
+    word-break: break-word;
+    color: #333;
+  }
+}
+
+// Dark mode (لو الصفحة تستخدم class على الجذر — نغطي Paper من MUI في الجدول فقط)
+// البطاقات تتبع لون الخلفية من الـ parent؛ للوضع الداكن يمكن توسيعها لاحقاً عبر theme
+
 .table {
   .cellWrapper {
     display: flex;

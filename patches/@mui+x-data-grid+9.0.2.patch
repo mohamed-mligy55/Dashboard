@@ -1,0 +1,26 @@
+diff --git a/node_modules/@mui/x-data-grid/components/containers/GridRootStyles.js b/node_modules/@mui/x-data-grid/components/containers/GridRootStyles.js
+index e4ac53b..ad80765 100644
+--- a/node_modules/@mui/x-data-grid/components/containers/GridRootStyles.js
++++ b/node_modules/@mui/x-data-grid/components/containers/GridRootStyles.js
+@@ -132,7 +132,7 @@ const GridRootStyles = exports.GridRootStyles = (0, _styles.styled)('div', {
+     transform: 'translate(0, 0)',
+     // Create a stacking context to keep scrollbars from showing on top
+ 
+-    [`.${_gridClasses.gridClasses.main} > *:first-child${ignoreSsrWarning}`]: {
++    [`.${_gridClasses.gridClasses.main} > *:first-of-type`]: {
+       borderTopLeftRadius: 'var(--unstable_DataGrid-radius)',
+       borderTopRightRadius: 'var(--unstable_DataGrid-radius)'
+     },
+diff --git a/node_modules/@mui/x-data-grid/components/containers/GridRootStyles.mjs b/node_modules/@mui/x-data-grid/components/containers/GridRootStyles.mjs
+index e861e4c..515f536 100644
+--- a/node_modules/@mui/x-data-grid/components/containers/GridRootStyles.mjs
++++ b/node_modules/@mui/x-data-grid/components/containers/GridRootStyles.mjs
+@@ -126,7 +126,7 @@ export const GridRootStyles = styled('div', {
+     transform: 'translate(0, 0)',
+     // Create a stacking context to keep scrollbars from showing on top
+ 
+-    [`.${c.main} > *:first-child${ignoreSsrWarning}`]: {
++    [`.${c.main} > *:first-of-type`]: {
+       borderTopLeftRadius: 'var(--unstable_DataGrid-radius)',
+       borderTopRightRadius: 'var(--unstable_DataGrid-radius)'
+     },

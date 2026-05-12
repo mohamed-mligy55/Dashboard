@@ -1,5 +1,25 @@
+.data-grid-shell {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .table-wrapper {
-  padding: 0 30px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0 8px;
+
+  @media (min-width: 600px) {
+    padding: 0 12px;
+  }
+
+  @media (min-width: 768px) {
+    padding: 0 30px;
+  }
 
   &.light {
     background-color: #fff;
@@ -20,6 +40,12 @@
       border: 1px solid #555;
       color: #fff;
     }
+
+    .status-pill {
+      &.active { background: rgba(40, 167, 69, 0.2); color: #5cd88a; }
+      &.passive { background: rgba(220, 53, 69, 0.2); color: #f5a0a8; }
+      &.pending { background: rgba(255, 193, 7, 0.2); color: #ffd454; }
+    }
   }
 
   .user-cell {
@@ -27,11 +53,33 @@
     align-items: center;
     gap: 12px;
     height: 100%;
+    min-width: 0;
 
-    img {
+    &__avatar {
       width: 32px;
       height: 32px;
       border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    &__name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &--compact {
+      gap: 8px;
+
+      .user-cell__avatar {
+        width: 28px;
+        height: 28px;
+      }
+
+      .user-cell__name {
+        font-size: 0.8125rem;
+      }
     }
   }
 
@@ -40,6 +88,12 @@
     border-radius: 6px;
     font-size: 1rem;
     font-weight: 500;
+    white-space: nowrap;
+
+    &--compact {
+      padding: 2px 8px;
+      font-size: 0.75rem;
+    }
 
     &.active { background: #e6f7ee; color: #28a745; }
     &.passive { background: #fff0f0; color: #dc3545; }
@@ -48,9 +102,20 @@
 
   .action-buttons {
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
     align-items: center;
     height: 100%;
+
+    &--compact {
+      gap: 4px;
+
+      a,
+      button {
+        padding: 2px 6px;
+        font-size: 0.75rem;
+      }
+    }
 
     button {
       padding: 4px 10px;
