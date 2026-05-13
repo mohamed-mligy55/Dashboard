@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
 const Home = lazy(() => import("./pages/home/Home"));
-const Lists = lazy(() => import("./pages/list/List"));
+const Lists = lazy(() => import("./pages/list/Lists"));
 const New = lazy(() => import("./pages/new/New"));
 const EditUser = lazy(() => import("./pages/editUser/EditUser"));
 const Productdetails = lazy(() => import("./pages/productdetails/productdetails"));

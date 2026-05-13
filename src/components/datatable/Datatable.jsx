@@ -146,31 +146,36 @@ const Datatable = () => {
   return (
     <div className={`table-wrapper ${theme.palette.mode}`}>
       <div className="data-grid-shell">
-        <DataGrid
-          rows={data || []}
-          columns={columns}
-          loading={isLoading}
-          checkboxSelection={!isSmDown}
-          disableRowSelectionOnClick
-          autoHeight
-          density={isSmDown ? "compact" : "standard"}
-          initialState={{
-            pagination: { paginationModel: { pageSize: isSmDown ? 5 : 10 } },
-          }}
-          sx={{
-            width: "100%",
-            border: "none",
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: theme.palette.background.default,
-            },
-            "& .MuiDataGrid-cell": {
-              display: "flex",
-              alignItems: "center",
-            },
-          }}
-        />
+      <DataGrid
+  rows={data || []}
+  columns={columns}
+  loading={isLoading}
+  checkboxSelection={!isSmDown}
+  disableRowSelectionOnClick
+  autoHeight
+  density={isSmDown ? "compact" : "standard"}
+  initialState={{
+    pagination: {
+      paginationModel: {
+        pageSize: isSmDown ? 5 : 10,
+      },
+    },
+  }}
+  pageSizeOptions={isSmDown ? [5] : [5, 10, 20]}
+  sx={{
+    width: "100%",
+    border: "none",
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary,
+    "& .MuiDataGrid-columnHeaders": {
+      backgroundColor: theme.palette.background.default,
+    },
+    "& .MuiDataGrid-cell": {
+      display: "flex",
+      alignItems: "center",
+    },
+  }}
+/>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import Navbar from "../../components/navbar/Navbar";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; 
 import { useTheme } from "@mui/material/styles";
-import { apiUrl } from "../../api";
+
 
 const EditUser = ({ title }) => {
   const theme = useTheme();
@@ -26,7 +26,7 @@ const EditUser = ({ title }) => {
   const { data: user, isLoading } = useQuery({
     queryKey: ["user", id],
     queryFn: async () => {
-      const res = await fetch(`http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`);
+      const res = await fetch(`https://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`);
       if (!res.ok) throw new Error("User not found");
       return res.json();
     },
@@ -65,7 +65,7 @@ const EditUser = ({ title }) => {
       // تحديث الكاش وإعادة التوجيه
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["user", id] });
-      navigate("/lists"); // التوجيه لصفحة الجدول بعد النجاح
+              navigate("/lists") // التوجيه لصفحة الجدول بعد النجاح
     },
     onError: () => {
       alert("حدث خطأ أثناء التحديث");

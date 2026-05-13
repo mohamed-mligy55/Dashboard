@@ -6,7 +6,6 @@ import Chart from "../../components/chart/Chart";
 import List from "../../components/table/Table";
 import { useQuery } from '@tanstack/react-query';
 import { useParams, Link } from "react-router-dom"; 
-import { apiUrl } from "../../api";
 
 const Productdetails = () => {
   const { id } = useParams();

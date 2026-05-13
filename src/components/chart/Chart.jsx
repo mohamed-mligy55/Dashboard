@@ -24,10 +24,9 @@ const Chart = ({ aspect = 2, title = "Revenue" }) => {
   return (
     <div className="chart">
       {title ? <div className="title">{title}</div> : null}
-      <ResponsiveContainer width="100%" aspect={aspect}>
+     <ResponsiveContainer width="100%" height={500}>
         <AreaChart
-          width={730}
-          height={250}
+          
           data={data}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
