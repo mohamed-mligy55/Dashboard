@@ -34,7 +34,7 @@ const fetchUsers = async () => {
 
 // 2. دالة الحذف من MockAPI
 const deleteUserApi = async (id) => {
-  const response = await fetch(`http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`, {
+  const response = await fetch(`https://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) throw new Error('Failed to delete');
@@ -50,6 +50,9 @@ const Datatable = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['users'],
     queryFn: fetchUsers,
+     refetchOnMount: true,
+  refetchOnWindowFocus: true,
+  staleTime: 0,
   });
 
   const mutation = useMutation({
