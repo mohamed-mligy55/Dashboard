@@ -1,4 +1,5 @@
 @use "sass:color";
+
 $primary-teal: #008080;
 $light-gray: #f0f0f0;
 $text-gray: #a0a0a0;
@@ -11,53 +12,33 @@ $bp: 768px;
   min-width: 0;
   min-height: 100vh;
 
-  &.light {
-    .form-card {
-      background-color: #fff;
-      color: #000;
-    }
-    input {
-      color: #000;
-      border-bottom: 1px solid #ccc;
-    }
-  }
+  /* =========================
+     LIGHT BASE (DEFAULT)
+  ========================= */
 
-  &.dark {
-    .form-card {
-      background-color: #111;
-      color: #fff;
-    }
-
-    input {
-      color: #fff;
-      background: transparent;
-      border-bottom: 1px solid #555;
-    }
-
-    label {
-      color: #ccc;
-    }
-  }
+  background-color: #ffffff;
+  color: #000;
 
   .newContainer {
     flex: 6;
     min-width: 0;
     width: 100%;
+    background-color: #ffffff;
+  }
 
-    .top {
-      box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
-      padding: 10px;
-      margin: 20px;
-      display: flex;
+  .top {
+    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+    padding: 10px;
+    margin: 20px;
+    display: flex;
 
-      @media (max-width: $bp) {
-        margin: 10px;
-      }
+    @media (max-width: $bp) {
+      margin: 10px;
+    }
 
-      h1 {
-        color: lightgray;
-        font-size: clamp(16px, 4vw, 20px);
-      }
+    h1 {
+      color: lightgray;
+      font-size: clamp(16px, 4vw, 20px);
     }
   }
 
@@ -69,17 +50,15 @@ $bp: 768px;
       padding: 12px;
     }
 
-    .header {
-      h1 {
-        color: $light-gray;
-        font-size: clamp(1.1rem, 4vw, 24px);
-        margin-bottom: 10px;
-        font-weight: 500;
-      }
+    .header h1 {
+      color: $light-gray;
+      font-size: clamp(1.1rem, 4vw, 24px);
+      margin-bottom: 10px;
+      font-weight: 500;
     }
 
     .form-card {
-      background-color: white;
+      background-color: #fff;
       border-radius: 8px;
       padding: 40px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -154,7 +133,7 @@ $bp: 768px;
               padding: 8px 0;
               font-size: 14px;
               outline: none;
-              max-width: 100%;
+              background: transparent;
 
               &::placeholder {
                 color: $text-gray;
@@ -187,7 +166,7 @@ $bp: 768px;
               font-size: 16px;
               font-weight: bold;
               cursor: pointer;
-              transition: background 0.3s;
+              transition: 0.3s;
               width: 100%;
               max-width: 320px;
             }
@@ -195,5 +174,76 @@ $bp: 768px;
         }
       }
     }
+  }
+
+  /* =========================
+     DARK MODE (FULL FIX)
+  ========================= */
+
+  &.dark {
+    background-color: #111;
+    color: #fff;
+
+    .newContainer {
+      background-color: #111;
+    }
+
+    .top {
+      background-color: #1e1e1e;
+      box-shadow: none;
+
+      h1 {
+        color: #ddd;
+      }
+    }
+
+    .add-user-container {
+      .header h1 {
+        color: #ddd;
+      }
+
+      .form-card {
+        background-color: #1e1e1e;
+        border: 1px solid #333;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      }
+
+      label {
+        color: #ccc;
+      }
+
+      input {
+        background-color: #2a2a2a;
+        color: #fff;
+        border-bottom: 1px solid #555;
+
+        &::placeholder {
+          color: #888;
+        }
+      }
+
+      .avatar-placeholder {
+        background-color: #2b2b2b;
+      }
+
+      .send-btn {
+        background-color: teal;
+        color: #fff;
+      }
+
+      .upload-box-icon {
+        border-color: #555;
+        color: #fff;
+      }
+    }
+  }
+
+  /* =========================
+     LIGHT MODE OVERRIDE (OPTIONAL)
+  ========================= */
+
+  &.light {
+    background-color: #ffffff;
+    color: #000;
   }
 }
