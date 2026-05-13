@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useQuery } from "@tanstack/react-query";
-import { apiUrl } from "../../api";
+
 
 const Tabledata = () => {
   const theme = useTheme();
@@ -28,7 +28,7 @@ const Tabledata = () => {
   });
 
   if (isLoading) return <p style={{ padding: "20px" }}>Loading...</p>;
- 
+ if(error) return <p style={{ padding: "20px", color: "red" }}>Error: {error.message}</p>;
 
   // --- وضع الكروت للموبايل والتابلت ---
   if (isCompact) {
