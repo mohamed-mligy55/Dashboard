@@ -1,106 +1,99 @@
 import "./editUser.scss";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; 
 import { useTheme } from "@mui/material/styles";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiUrl } from "../../api";
 
 const EditUser = ({ title }) => {
-     const theme = useTheme(); // 
+  const theme = useTheme();
   const { id } = useParams();
-  const navigate = useNavigate(); // لإعادة التوجيه بعد النجاح
-  
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   // States
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
-  const queryClient = useQueryClient();
-  const [password, setPassword] = useState(""); // يفضل الحذر عند تعديل الباسورد
+  const [password, setPassword] = useState("");
 
-
-
+  // 1. جلب بيانات المستخدم الحالية
   const { data: user, isLoading } = useQuery({
     queryKey: ["user", id],
     queryFn: async () => {
-      const res = await fetch(apiUrl(`/users/${id}`));
+      const res = await fetch(`http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`);
       if (!res.ok) throw new Error("User not found");
       return res.json();
     },
   });
 
+  // 2. توزيع البيانات في الـ Inputs عند تحميلها
   useEffect(() => {
     if (user) {
-      setFirstName(user.name?.firstname || "");
-      setLastName(user.name?.lastname || "");
+      // قراءة المفاتيح بناءً على هيكلة MockAPI الجديدة
+      setFirstName(user["first-name"] || user.firstname || "");
+      setLastName(user["last-name"] || user.lastname || "");
       setUsername(user.username || "");
       setPhone(user.phone || "");
       setEmail(user.email || "");
-      setStreet(user.address?.street || "");
-      setCity(user.address?.city || "");
+      setCity(user.city || user.address?.city || "");
     }
   }, [user]);
-   
-const updateUser = async (updatedData) => {
-  const res = await fetch(apiUrl(`/users/${id}`), {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(updatedData),
-  });
 
-  if (!res.ok) throw new Error("Update failed");
+  // 3. دالة التحديث (PATCH)
+  const updateUser = async (updatedData) => {
+    const res = await fetch(`http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`, {
+      method: "PUT", // MockAPI يفضل PUT للتحديث الكامل أو PATCH للتحديث الجزئي
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
 
-  return res.json();
-};
-
-
-
-const mutation = useMutation({
-  mutationFn: updateUser,
-  onSuccess: () => {
-   queryClient.invalidateQueries({ queryKey: ["user", id] });
-    navigate("/lists"); // مش lists
-  },
-  onError: () => {
-    alert("Update failed");
-  },
-});
-  // 2. دالة التحديث
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-   const userData = {
-    email,
-    username,
-    phone,
-    name: {
-      firstname: firstName,
-      lastname: lastName,
-    },
-    address: {
-      city,
-      street,
-    },
+    if (!res.ok) throw new Error("Update failed");
+    return res.json();
   };
 
+  const mutation = useMutation({
+    mutationFn: updateUser,
+    onSuccess: () => {
+      // تحديث الكاش وإعادة التوجيه
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["user", id] });
+      navigate("/lists"); // التوجيه لصفحة الجدول بعد النجاح
+    },
+    onError: () => {
+      alert("حدث خطأ أثناء التحديث");
+    },
+  });
 
-    // بناء الكائن مع التأكد من عدم إرسال باسورد فارغ إذا لم يتم تغييره
- 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // بناء الكائن بنفس مفاتيح السيرفر (Flat Structure)
+    const userData = {
+      "first-name": firstName,
+      "last-name": lastName,
+      username,
+      email,
+      phone,
+      city,
+    };
 
-    // إضافة الباسورد فقط إذا قام المستخدم بكتابة شيء جديد
     if (password.trim() !== "") {
       userData.password = password;
     }
-        mutation.mutate(userData);
- 
+
+    mutation.mutate(userData);
   };
+
+  if (isLoading) return <div className="new">Loading...</div>;
+
   return (
     <div className={`new ${theme.palette.mode}`}>
       <Sidebar />
@@ -108,7 +101,6 @@ const mutation = useMutation({
         <Navbar />
 
         <div className="top">
-          {/* تغيير العنوان ليكون معبراً عن التعديل */}
           <h1>{title || "Edit User"}</h1>
         </div>
 
@@ -125,9 +117,10 @@ const mutation = useMutation({
                   <label>Image:</label>
                   <div className="upload-icon">
                     <input type="file" id="file-upload" hidden />
-                    <label htmlFor="file-upload">
-                      📁
-                    </label>
+                    <label htmlFor="file-upload">📁</label>
+                    <span style={{marginLeft: "10px", fontSize: "12px", color: "gray"}}>
+                       (Avatar is auto-generated from name)
+                    </span>
                   </div>
                 </div>
 
@@ -136,9 +129,9 @@ const mutation = useMutation({
                     <label>First Name</label>
                     <input
                       type="text"
-                      placeholder="John"
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
+                      required
                     />
                   </div>
 
@@ -146,9 +139,9 @@ const mutation = useMutation({
                     <label>Last Name</label>
                     <input
                       type="text"
-                      placeholder="Doe"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
+                      required
                     />
                   </div>
 
@@ -156,7 +149,6 @@ const mutation = useMutation({
                     <label>Username</label>
                     <input
                       type="text"
-                      placeholder="john_doe"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                     />
@@ -166,7 +158,6 @@ const mutation = useMutation({
                     <label>Phone</label>
                     <input
                       type="text"
-                      placeholder="+1 234 567 89"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                     />
@@ -176,19 +167,9 @@ const mutation = useMutation({
                     <label>Email</label>
                     <input
                       type="email"
-                      placeholder="john_doe@gmail.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Street</label>
-                    <input
-                      type="text"
-                      placeholder="Elton St."
-                      value={street}
-                      onChange={(e) => setStreet(e.target.value)}
+                      required
                     />
                   </div>
 
@@ -196,7 +177,6 @@ const mutation = useMutation({
                     <label>City</label>
                     <input
                       type="text"
-                      placeholder="Cairo"
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
                     />
@@ -214,8 +194,12 @@ const mutation = useMutation({
                 </div>
 
                 <div className="button-container">
-                  <button type="submit" className="send-btn">
-                    Update User
+                  <button 
+                    type="submit" 
+                    className="send-btn" 
+                    disabled={mutation.isPending}
+                  >
+                    {mutation.isPending ? "Updating..." : "Update User"}
                   </button>
                 </div>
 

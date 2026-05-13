@@ -1,0 +1,1 @@
+export const apiUrl = (path) =>`https://6a03a27c2afe8349b4b5654c.mockapi.io/api/users${path}`;

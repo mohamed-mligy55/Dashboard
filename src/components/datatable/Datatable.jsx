@@ -7,28 +7,34 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { apiUrl } from "../../api";
 
-// 1. دالة جلب البيانات من السيرفر المحلي
+// 1. دالة جلب البيانات من MockAPI
 const fetchUsers = async () => {
-  const res = await fetch(apiUrl("/users"));
+  const res = await fetch("http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user");
   if (!res.ok) throw new Error("Failed to fetch users");
   const data = await res.json();
   
-  // نستخدم map لتحويل شكل البيانات ليتناسب مع الـ DataGrid
-return data.map((user, index) => ({
-  id: user.id,
-  orderId: index + 1,
-  name: `${user?.name?.firstname ?? ""} ${user?.name?.lastname ?? ""}`.trim() || "Unknown",
-  avatar: `https://ui-avatars.com/api/?name=${user?.name?.firstname ?? ""}+${user?.name?.lastname ?? ""}`,
-  email: user.email || "N/A",
-  city: user?.address?.city || "N/A",
-  phone: user.phone || "N/A",
-  status: ['active', 'passive', 'pending'][index % 3],
-}));
+  // تحويل البيانات لتناسب عرض الـ DataGrid بناءً على هيكلة MockAPI الجديدة
+  return data.map((user, index) => {
+    // استخراج الأسماء مع دعم المفاتيح التي تحتوي على شرطة أو المفاتيح العادية
+    const fName = user["first-name"] || user.firstname || "";
+    const lName = user["last-name"] || user.lastname || "";
+    
+    return {
+      id: user.id,
+      orderId: user.id + "D", // التنسيق الذي طلبته 4D, 5D...
+      name: `${fName} ${lName}`.trim() || "Unknown User",
+      avatar: `https://ui-avatars.com/api/?name=${fName}+${lName}&background=random`,
+      email: user.email || "N/A",
+      city: user.city || "N/A",
+      phone: user.phone || "N/A",
+      status: user.status || ['active', 'passive', 'pending'][index % 3],
+    };
+  });
 };
 
-// 2. دالة الحذف الحقيقي من السيرفر المحلي
+// 2. دالة الحذف من MockAPI
 const deleteUserApi = async (id) => {
-  const response = await fetch(apiUrl(`/users/${id}`), {
+  const response = await fetch(`http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) throw new Error('Failed to delete');
@@ -44,14 +50,12 @@ const Datatable = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['users'],
     queryFn: fetchUsers,
-  
-  
   });
 
   const mutation = useMutation({
     mutationFn: deleteUserApi,
     onSuccess: () => {
-      // تحديث الكاش فوراً لحذف الصف من الجدول أمام المستخدم
+      // إعادة جلب البيانات فوراً بعد الحذف لتحديث الجدول
       queryClient.invalidateQueries({
         queryKey: ["users"]
       });
@@ -68,11 +72,7 @@ const Datatable = () => {
       renderCell: (params) => (
         <div className={`user-cell${isSmDown ? " user-cell--compact" : ""}`}>
           <img src={params.row.avatar} alt="" className="user-cell__avatar" />
-          <span className="user-cell__name">
-            {typeof params.row.name === "object"
-              ? `${params.row.name.firstname} ${params.row.name.lastname}`
-              : params.row.name}
-          </span>
+          <span className="user-cell__name">{params.row.name}</span>
         </div>
       ),
     };
@@ -81,7 +81,6 @@ const Datatable = () => {
       field: "status",
       headerName: "Status",
       width: isSmDown ? 88 : isMdDown ? 100 : 120,
-      minWidth: isSmDown ? 80 : undefined,
       renderCell: (params) => (
         <span className={`status-pill ${params.value}${isSmDown ? " status-pill--compact" : ""}`}>
           {params.value}
@@ -93,16 +92,11 @@ const Datatable = () => {
       field: "action",
       headerName: "Action",
       width: isSmDown ? 132 : isMdDown ? 150 : 180,
-      minWidth: isSmDown ? 120 : undefined,
       sortable: false,
       renderCell: (params) => (
         <div className={`action-buttons${isSmDown ? " action-buttons--compact" : ""}`}>
-          <Link to={`/user/${params.row.id}`} className="btn-view">
-            View
-          </Link>
-          <Link to={`/users/${params.row.id}`} className="btn-edit">
-            Edit
-          </Link>
+          <Link to={`/user/${params.row.id}`} className="btn-view">View</Link>
+          <Link to={`/users/${params.row.id}`} className="btn-edit">Edit</Link>
           <button
             type="button"
             onClick={() => mutation.mutate(params.row.id)}
@@ -119,49 +113,36 @@ const Datatable = () => {
       field: "orderId",
       headerName: "ID",
       width: isSmDown ? 52 : 70,
-      minWidth: isSmDown ? 48 : undefined,
     };
 
     const emailCol = {
       field: "email",
       headerName: "Email",
       flex: isMdDown && !isSmDown ? 1 : undefined,
-      minWidth: isMdDown && !isSmDown ? 140 : 180,
-      width: isMdDown && !isSmDown ? undefined : 200,
+      minWidth: 140,
+      width: 200,
     };
 
-    const cityCol = { field: "city", headerName: "City", width: 110, minWidth: 90 };
-    const phoneCol = { field: "phone", headerName: "Phone", width: 130, minWidth: 100 };
+    const cityCol = { field: "city", headerName: "City", width: 110 };
+    const phoneCol = { field: "phone", headerName: "Phone", width: 130 };
 
-    if (isSmDown) {
-      return [idCol, userCol, statusCol, actionCol];
-    }
+    if (isSmDown) return [idCol, userCol, statusCol, actionCol];
+    if (isMdDown) return [idCol, userCol, emailCol, statusCol, actionCol];
 
-    if (isMdDown) {
-      return [idCol, userCol, emailCol, statusCol, actionCol];
-    }
-
-    return [
-      idCol,
-      userCol,
-      emailCol,
-      { ...cityCol, width: 120 },
-      { ...phoneCol, width: 150 },
-      statusCol,
-      actionCol,
-    ];
+    return [idCol, userCol, emailCol, cityCol, phoneCol, statusCol, actionCol];
   }, [isSmDown, isMdDown, mutation]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div style={{ padding: 20 }}>Loading...</div>;
+  
   if (isError)
     return (
       <div className={`table-wrapper ${theme.palette.mode}`}>
         <p style={{ padding: 16 }}>
-          تعذّر تحميل المستخدمين: {error?.message ?? "خطأ شبكة"} — تأكد أن الخادم
-          يعمل (<code>npm run server</code>) وأعد تحميل الصفحة.
+          تعذّر تحميل البيانات من MockAPI: {error?.message}
         </p>
       </div>
     );
+
   return (
     <div className={`table-wrapper ${theme.palette.mode}`}>
       <div className="data-grid-shell">
@@ -173,37 +154,20 @@ const Datatable = () => {
           disableRowSelectionOnClick
           autoHeight
           density={isSmDown ? "compact" : "standard"}
-          columnHeaderHeight={isSmDown ? 40 : isMdDown ? 48 : 56}
-          rowHeight={isSmDown ? 44 : isMdDown ? 48 : 52}
-          pageSizeOptions={isSmDown ? [5, 10] : [10, 25, 50]}
           initialState={{
             pagination: { paginationModel: { pageSize: isSmDown ? 5 : 10 } },
           }}
           sx={{
             width: "100%",
-            minWidth: isSmDown ? 0 : isMdDown ? 480 : 720,
             border: "none",
             backgroundColor: theme.palette.background.paper,
             color: theme.palette.text.primary,
-            fontSize: isSmDown ? "0.8125rem" : isMdDown ? "0.875rem" : undefined,
-
             "& .MuiDataGrid-columnHeaders": {
               backgroundColor: theme.palette.background.default,
-              color: theme.palette.text.primary,
             },
-
-            "& .MuiDataGrid-row": {
-              backgroundColor: theme.palette.background.paper,
-            },
-
-            "& .MuiDataGrid-footerContainer": {
-              backgroundColor: theme.palette.background.default,
-              color: theme.palette.text.primary,
-            },
-
             "& .MuiDataGrid-cell": {
-              alignItems: "center",
               display: "flex",
+              alignItems: "center",
             },
           }}
         />

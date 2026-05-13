@@ -7,24 +7,23 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { apiUrl } from "../../api";
 
-const New = ({ inputs, title }) => {
+const New = ({ title }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const theme = useTheme();
 
-  const [file, setFile] = useState("");
-
+  // States للهوية والحقول
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [street, setStreet] = useState("");
   const [password, setPassword] = useState("");
   const [city, setCity] = useState("");
 
+  // دالة الإرسال إلى MockAPI
   const addUserApi = async (userData) => {
-    const res = await fetch(apiUrl("/users"), {
+    const res = await fetch("http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {
@@ -33,68 +32,49 @@ const New = ({ inputs, title }) => {
     });
 
     if (!res.ok) {
-      let detail = res.statusText;
-      try {
-        const errBody = await res.json();
-        if (errBody?.error) detail = errBody.error;
-      } catch {
-        /* ignore */
-      }
-      throw new Error(detail || `HTTP ${res.status}`);
+      throw new Error("Failed to add user");
     }
 
     return res.json();
   };
 
-  // 👉 Mutation
+  // 👉 Mutation لإدارة حالة الإضافة
   const mutation = useMutation({
     mutationFn: addUserApi,
     onSuccess: () => {
-      // 🔥 أهم سطر: تحديث جدول المستخدمين
-     queryClient.invalidateQueries({
-  queryKey: ["users"]
-});
-      navigate("/lists");
-        setFirstName("");
-  setLastName("");
-  setUsername("");
-  setPhone("");
-  setEmail("");
-  setStreet("");
-  setCity("");
-  setPassword("");
+      // تحديث كاش البيانات لإظهار المستخدم الجديد فوراً في الجدول
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      
+      // التوجيه لصفحة القائمة
+      navigate("/lists"); 
+
+      // تصفير الحقول
+      setFirstName("");
+      setLastName("");
+      setUsername("");
+      setPhone("");
+      setEmail("");
+      setCity("");
+      setPassword("");
     },
     onError: (err) => {
-      const msg =
-        err?.message ||
-        "تعذّر الإضافة. شغّل الخادم: npm run server (منفذ 5000) مع npm run dev.";
-      alert(msg);
+      alert("حدث خطأ أثناء الإضافة: " + err.message);
     },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // 🔥 بناء الكائن بهيكل مسطح (Flat) ليتناسب مع MockAPI والجدول
     const userData = {
-        id: Date.now(),
-      email,
-      username,
-      password,
-      phone,
-      name: {
-        firstname: firstName,
-        lastname: lastName,
-      },
-      address: {
-        city,
-        street,
-        number: 1,
-        zipcode: "00000",
-        geolocation: {
-          lat: "0",
-          long: "0",
-        },
-      },
+      "first-name": firstName, // نفس المفتاح المستخدم في الـ Datatable
+      "last-name": lastName,
+      "username": username,
+      "email": email,
+      "phone": phone,
+      "city": city,
+      "password": password,
+      "status": "active", // حالة افتراضية
     };
 
     mutation.mutate(userData);
@@ -103,37 +83,34 @@ const New = ({ inputs, title }) => {
   return (
     <div className={`new ${theme.palette.mode}`}>
       <Sidebar />
-
       <div className="newContainer">
         <Navbar />
 
         <div className="top">
-          <h1>{title}</h1>
+          <h1>{title || "Add New User"}</h1>
         </div>
 
         <div className="add-user-container">
           <div className="header">
-            <h1>Add New User</h1>
+            <h1>User Details</h1>
           </div>
 
           <div className="form-card">
-            <form
-              className="user-form"
-              onSubmit={handleSubmit}
-              noValidate
-            >
+            <form className="user-form" onSubmit={handleSubmit} noValidate>
               <div className="inputs-section">
-
+                
                 <div className="form-group full-row">
                   <label>Image:</label>
                   <div className="upload-icon">
                     <input type="file" id="file-upload" hidden />
                     <label htmlFor="file-upload">📁</label>
+                    <span style={{marginLeft: "10px", fontSize: "12px", color: "gray"}}>
+                      (Avatar will be auto-generated)
+                    </span>
                   </div>
                 </div>
 
                 <div className="inputs-grid">
-
                   <div className="form-group">
                     <label>First Name</label>
                     <input
@@ -141,6 +118,7 @@ const New = ({ inputs, title }) => {
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       placeholder="John"
+                      required
                     />
                   </div>
 
@@ -151,6 +129,7 @@ const New = ({ inputs, title }) => {
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       placeholder="Doe"
+                      required
                     />
                   </div>
 
@@ -181,16 +160,7 @@ const New = ({ inputs, title }) => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="john_doe@gmail.com"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Street</label>
-                    <input
-                      type="text"
-                      value={street}
-                      onChange={(e) => setStreet(e.target.value)}
-                      placeholder="Elton St."
+                      required
                     />
                   </div>
 
@@ -210,9 +180,10 @@ const New = ({ inputs, title }) => {
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      placeholder="******"
+                      required
                     />
                   </div>
-
                 </div>
 
                 <div className="button-container">
@@ -221,15 +192,13 @@ const New = ({ inputs, title }) => {
                     className="send-btn"
                     disabled={mutation.isPending}
                   >
-                    {mutation.isPending ? "Sending..." : "Send"}
+                    {mutation.isPending ? "Sending..." : "Add User"}
                   </button>
                 </div>
-
               </div>
             </form>
           </div>
         </div>
-
       </div>
     </div>
   );

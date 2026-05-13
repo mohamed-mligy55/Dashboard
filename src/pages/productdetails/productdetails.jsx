@@ -5,27 +5,32 @@ import Navbar from "../../components/navbar/Navbar";
 import Chart from "../../components/chart/Chart";
 import List from "../../components/table/Table";
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from "react-router-dom"; // تأكد من المسار الصحيح للـ router
+import { useParams, Link } from "react-router-dom"; 
 import { apiUrl } from "../../api";
 
 const Productdetails = () => {
   const { id } = useParams();
 
   const fetchdetails = async () => {
-    // تأكد من البورت (5000 كما عملنا سابقاً)
-    const res = await fetch(apiUrl(`/users/${id}`));
+    const res = await fetch(`http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`);
     if (!res.ok) throw new Error("User not found");
     const data = await res.json();
     return data;
   };
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['user', id], // أضف id للـ key لضمان تحديث البيانات لكل مستخدم
+    queryKey: ['user', id], 
     queryFn: fetchdetails
   });
 
   if (isLoading) return <div className="single">Loading...</div>;
   if (error) return <div className="single">Error loading user details.</div>;
+
+  // استخراج البيانات بناءً على هيكلة MockAPI الجديدة
+  const firstName = data?.["first-name"] || data?.firstname || "";
+  const lastName = data?.["last-name"] || data?.lastname || "";
+  const fullName = `${firstName} ${lastName}`.trim() || "Unknown User";
+  const city = data?.city || data?.address?.city || "N/A";
 
   return (
     <div className="single">
@@ -34,41 +39,47 @@ const Productdetails = () => {
         <Navbar />
         <div className="top">
           <div className="left">
-            <div className="editButton">Edit</div>
+            {/* زر التعديل يوجه الآن لصفحة الـ Edit الحقيقية */}
+            <Link to={`/users/${id}`} className="editButton" style={{ textDecoration: "none" }}>
+              Edit
+            </Link>
             <h1 className="title">Information</h1>
             <div className="item">
               <img
-                // صورة افتراضية تعتمد على الاسم بما أن الـ API لا يحتوي على صور
-                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
-                  `${data?.name?.firstname ?? ""} ${data?.name?.lastname ?? ""}`,
-                )}&background=random&size=120`}
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=random&size=120`}
                 alt=""
                 className="itemImg"
               />
               <div className="details">
-                {/* دمج الاسم الأول والأخير من الـ API */}
-                <h1 className="itemTitle">{data?.name.firstname} {data?.name.lastname}</h1>
+                <h1 className="itemTitle">{fullName}</h1>
                 
                 <div className="detailItem">
                   <span className="itemKey">Email:</span>
-                  <span className="itemValue">{data?.email}</span>
+                  <span className="itemValue">{data?.email || "N/A"}</span>
                 </div>
                 
                 <div className="detailItem">
                   <span className="itemKey">Phone:</span>
-                  <span className="itemValue">{data?.phone}</span>
+                  <span className="itemValue">{data?.phone || "N/A"}</span>
                 </div>
                 
                 <div className="detailItem">
                   <span className="itemKey">Address:</span>
                   <span className="itemValue">
-                    {data?.address.street}, {data?.address.number}, {data?.address.city}
+                    {city}
                   </span>
                 </div>
-                
+
                 <div className="detailItem">
-                  <span className="itemKey">Zip Code:</span>
-                  <span className="itemValue">{data?.address.zipcode}</span>
+                  <span className="itemKey">Username:</span>
+                  <span className="itemValue">{data?.username || "N/A"}</span>
+                </div>
+
+                <div className="detailItem">
+                  <span className="itemKey">Status:</span>
+                  <span className={`itemValue status ${data?.status || "active"}`}>
+                    {data?.status || "active"}
+                  </span>
                 </div>
               </div>
             </div>

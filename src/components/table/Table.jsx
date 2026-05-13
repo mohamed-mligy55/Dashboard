@@ -17,8 +17,8 @@ const Tabledata = () => {
   const isCompact = useMediaQuery(theme.breakpoints.down("md"));
 
   const fetchData = async () => {
-    const res = await fetch(apiUrl("/users"));
-    if (!res.ok) throw new Error("error");
+    const res = await fetch("http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user");
+    if (!res.ok) throw new Error("Failed to fetch data");
     return res.json();
   };
 
@@ -27,25 +27,20 @@ const Tabledata = () => {
     queryFn: fetchData,
   });
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>{error.message}</p>;
+  if (isLoading) return <p style={{ padding: "20px" }}>Loading...</p>;
+  if (error) return <p style={{ padding: "20px", color: "red" }}>{error.message}</p>;
 
+  // --- وضع الكروت للموبايل والتابلت ---
   if (isCompact) {
-    const cardMod =
-      theme.palette.mode === "dark" ? "user-table-cards--dark" : "";
+    const cardMod = theme.palette.mode === "dark" ? "user-table-cards--dark" : "";
 
     return (
-      <ul
-        className={`user-table-cards ${cardMod}`.trim()}
-        aria-label="Users list"
-      >
+      <ul className={`user-table-cards ${cardMod}`.trim()} aria-label="Users list">
         {data?.map((user) => {
-          const firstName = user.name?.firstname || "";
-          const lastName = user.name?.lastname || "";
-          const city =
-            typeof user.address === "object"
-              ? user.address?.city
-              : user.address || "N/A";
+          // التعامل مع مفاتيح MockAPI (first-name و last-name)
+          const firstName = user["first-name"] || user.name?.firstname || "";
+          const lastName = user["last-name"] || user.name?.lastname || "";
+          const city = user.city || user.address?.city || "N/A";
 
           return (
             <li key={user.id} className="user-table-cards__item">
@@ -79,6 +74,7 @@ const Tabledata = () => {
     );
   }
 
+  // --- وضع الجدول للشاشات الكبيرة ---
   return (
     <TableContainer
       component={Paper}
@@ -87,14 +83,10 @@ const Tabledata = () => {
       sx={{
         maxWidth: "100%",
         borderRadius: 1,
+        backgroundColor: theme.palette.background.paper,
       }}
     >
-      <Table
-        className="home-users-table"
-        size="small"
-        stickyHeader
-        aria-label="Users table"
-      >
+      <Table className="home-users-table" size="small" stickyHeader aria-label="Users table">
         <TableHead>
           <TableRow>
             <TableCell sx={{ width: 72 }}>ID</TableCell>
@@ -107,8 +99,10 @@ const Tabledata = () => {
 
         <TableBody>
           {data?.map((user) => {
-            const firstName = user.name?.firstname || "";
-            const lastName = user.name?.lastname || "";
+            // التعامل مع مفاتيح MockAPI (first-name و last-name)
+            const firstName = user["first-name"] || user.name?.firstname || "";
+            const lastName = user["last-name"] || user.name?.lastname || "";
+            const city = user.city || user.address?.city || "N/A";
 
             return (
               <TableRow key={user.id} hover>
@@ -131,11 +125,7 @@ const Tabledata = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>
                   {user.phone || "N/A"}
                 </TableCell>
-                <TableCell>
-                  {typeof user.address === "object"
-                    ? user.address?.city
-                    : user.address || "N/A"}
-                </TableCell>
+                <TableCell>{city}</TableCell>
               </TableRow>
             );
           })}
