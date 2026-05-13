@@ -17,7 +17,7 @@ const Tabledata = () => {
   const isCompact = useMediaQuery(theme.breakpoints.down("md"));
 
   const fetchData = async () => {
-    const res = await fetch("http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user");
+    const res = await fetch("https://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user");
     if (!res.ok) throw new Error("Failed to fetch data");
     return res.json();
   };
@@ -28,7 +28,7 @@ const Tabledata = () => {
   });
 
   if (isLoading) return <p style={{ padding: "20px" }}>Loading...</p>;
-  if (error) return <p style={{ padding: "20px", color: "red" }}>{error.message}</p>;
+ 
 
   // --- وضع الكروت للموبايل والتابلت ---
   if (isCompact) {

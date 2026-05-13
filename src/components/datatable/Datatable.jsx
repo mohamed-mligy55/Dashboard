@@ -9,7 +9,7 @@ import { apiUrl } from "../../api";
 
 // 1. دالة جلب البيانات من MockAPI
 const fetchUsers = async () => {
-  const res = await fetch("http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user");
+  const res = await fetch("https://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user");
   if (!res.ok) throw new Error("Failed to fetch users");
   const data = await res.json();
   

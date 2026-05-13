@@ -23,7 +23,7 @@ const New = ({ title }) => {
 
   // دالة الإرسال إلى MockAPI
   const addUserApi = async (userData) => {
-    const res = await fetch("http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user", {
+    const res = await fetch("https://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {

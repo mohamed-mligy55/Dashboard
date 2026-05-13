@@ -12,7 +12,7 @@ const Productdetails = () => {
   const { id } = useParams();
 
   const fetchdetails = async () => {
-    const res = await fetch(`http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`);
+    const res = await fetch(`https://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`);
     if (!res.ok) throw new Error("User not found");
     const data = await res.json();
     return data;

@@ -47,7 +47,7 @@ const EditUser = ({ title }) => {
 
   // 3. دالة التحديث (PATCH)
   const updateUser = async (updatedData) => {
-    const res = await fetch(`http://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`, {
+    const res = await fetch(`https://6a03a27c2afe8349b4b5654c.mockapi.io/api/users/user/${id}`, {
       method: "PUT", // MockAPI يفضل PUT للتحديث الكامل أو PATCH للتحديث الجزئي
       headers: {
         "Content-Type": "application/json",
